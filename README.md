@@ -37,6 +37,182 @@ and the revised edge-clamp mount that clears the modeled LED bodies.
 - [Downloaded YD-ESP32-S3 reference STEP](YD-ESP32-S3.step)
 - [Reference repository licence](YD-ESP32-S3-LICENSE.txt)
 
+## Parts List
+
+Quantities below are for one enclosure, with no spares. Fastener lengths are
+measured from beneath the head. Confirm fit with your filament, actual PCB,
+and fasteners before ordering a large batch.
+
+### Printed Parts
+
+| Quantity | Part | File |
+| --- | --- | --- |
+| 1 | Base | [base.stl](base.stl) |
+| 1 | Lid, already oriented flat for printing | [lid_ir_deck.stl](lid_ir_deck.stl) |
+| 2 | ESP32 retaining bars | [esp_retainer.stl](esp_retainer.stl) |
+| 2 | IR PCB keeper plates | [ir_keeper.stl](ir_keeper.stl) |
+
+Six printed pieces total. PETG, 0.2 mm layers, and four perimeters are the
+suggested starting settings. Do not print either electronics reference model.
+
+### Screws And Hardware
+
+| Quantity | Fastener | Location and requirement |
+| --- | --- | --- |
+| 4 | M2.5 x 8 mm plastic-thread-forming screws | ESP32 retaining bars into base bosses; 2 mm bar leaves about 6 mm engagement in the 8 mm-deep pilots |
+| 4 | M2.5 x 10 mm plastic-thread-forming screws | Lid into the four base corner posts; 2 mm lid leaves about 8 mm engagement in the 12 mm-deep pilots |
+| 4 | M2.5 x 10 mm machine screws, low-profile heads | IR keeper plates; head height no more than 1.5 mm; insert from inside with nuts outside |
+| 4 | M2.5 hex nuts, approximately 2 mm thick | Outside the lid, on the IR keeper bolts |
+| 4 | M2.5 flat washers, approximately 0.5 mm thick, outside diameter no more than 6 mm | One under each external IR keeper nut |
+
+There are 12 screws/bolts total, plus four nuts and four washers. The two
+M2.5 x 10 mm rows are different fastener types: machine screws need nuts;
+plastic-thread-forming screws bite directly into the printed 2.1 mm pilots.
+Do not substitute sharp wood screws or force oversized screws into the posts.
+No heat-set inserts, PCB mounting-hole screws, or adhesive pads are required.
+
+The IR bolt stack is approximately 2 mm keeper + 1.6 mm spacer + 2 mm lid +
+0.5 mm washer + 2 mm nut = 8.1 mm, leaving about 1.9 mm of a 10 mm bolt beyond
+the nut. Check your real hardware. The keeper bolts pass outside the PCB,
+not through its corner holes. Keep nuts and protruding threads on the outside;
+low screw heads on the inside preserve clearance above the ESP32.
+
+### Electronics And Wiring
+
+| Quantity | Item | Notes |
+| --- | --- | --- |
+| 1 | ESP32-S3 N16R8 dual-USB-C development board | Your actual board, with fitted pin headers; reference CAD is only a close match |
+| 1 | 360-degree 38 kHz IR transmitter/receiver module | Four-pin interface labeled VCC, REC, SND, GND; verify electrical ratings below |
+| 1 | USB-C data/power cable | Slim plug; the modeled sockets are recessed, so verify reach |
+| 1 | Regulated USB 5 V supply, typically 1 A or greater | Supply rating is available capacity, not permission to exceed the board regulator rating |
+| 4 | Short insulated signal/power leads, typically 26-28 AWG | VCC, GND, REC, SND; select wire gauge after checking module current |
+| 1 set | Suitable 2.54 mm female connectors or soldered harness | Low-profile/right-angle connectors may be needed; check lid and LED clearance |
+| As needed | Heat-shrink tubing and strain relief | Insulate every splice and keep wiring away from keeper screws and optics |
+| 1 | 100 nF ceramic capacitor, rated at least 10 V | Recommended across module VCC/GND, close to its header, if not already fitted adequately |
+| 1 | 10 uF capacitor, rated at least 10 V | Recommended local bulk decoupling; observe polarity if electrolytic |
+| Conditional: 2 | SN74LVC1T45 level-shifter breakouts, or equivalent direction-controlled 3.3 V/5 V translators | Only for the verified 5 V module option; one TX channel and one RX channel |
+| Conditional: 4 | 100 nF ceramic bypass capacitors | For the two translators, one per supply pin, unless already on their breakouts |
+
+A multimeter, a matching screwdriver/hex key, and a small nut driver or pliers
+are needed for assembly. Use a soldering iron only if the selected harness or
+translator requires soldering. Electronics, connectors, capacitors, and extra
+translator boards have no dedicated new mounting positions in the CAD; check
+their physical clearance and insulate them before closing the enclosure.
+
+## Wiring Diagram
+
+**Provisional wiring, not an electrically tested design.** The supplied photos
+confirm the VCC / REC / SND / GND labels, but neither the photo nor the accessible
+seller information establishes this exact module's supply range, current draw,
+SND input threshold/polarity, or REC output type. Confirm those with the seller's
+schematic/datasheet or a controlled bench test before connecting it. ESP32-S3
+GPIO is 3.3 V logic, not 5 V tolerant. Do not infer electrical compatibility
+from the 3D model or from another similar-looking module.
+
+### Option A: Verified 3.3 V Module
+
+Use this option only if the actual module is rated for a 3.3 V supply, accepts
+3.3 V SND signaling, and its REC output is compatible with ESP32 3.3 V input
+thresholds and voltage limits. Its peak current must also fit the development
+board's remaining 3.3 V regulator capacity while Wi-Fi is transmitting.
+
+```mermaid
+flowchart LR
+   USB["USB 5 V power"] --> ESPUSB["ESP32-S3 USB-C port"]
+   subgraph ESP["ESP32-S3 development board"]
+      ESPUSB
+      V33["3V3 power pin"]
+      TX["GPIO4 - transmit output"]
+      RX["GPIO5 - receive input"]
+      GND["GND"]
+   end
+   subgraph IR["IR360 module - verified 3.3 V version"]
+      IVCC["VCC"]
+      ISND["SND - transmit input"]
+      IREC["REC - receive output"]
+      IGND["GND"]
+   end
+   V33 -->|"3.3 V"| IVCC
+   TX -->|"IR transmit signal"| ISND
+   IREC -->|"3.3 V-compatible receive signal"| RX
+   GND --- IGND
+```
+
+| IR module label | ESP32 connection | Direction / purpose |
+| --- | --- | --- |
+| VCC | 3V3 | Power, only after verifying the module's 3.3 V rating and current budget |
+| REC | GPIO5 | Module output to ESP32 input |
+| SND | GPIO4 | ESP32 output to module input |
+| GND | GND | Common ground |
+
+Connect the 100 nF and 10 uF capacitors in parallel between the module's VCC
+and GND, near the module. On a polarized capacitor, positive goes to VCC and
+negative to GND. These are supply bypass capacitors, not series components.
+
+Follow the silk-screen labels on the real boards, not the apparent top-to-bottom
+order in a photograph. GPIO4/GPIO5 mean GPIO numbers, not the fourth/fifth pin
+along a header. Verify the clone's pinout. These example pins avoid the native
+USB GPIO19/GPIO20 and the N16R8 module's reserved flash/PSRAM connections.
+Do not connect to a pin merely labeled TX/RX expecting it to be GPIO4/GPIO5.
+
+### Option B: Verified 5 V Module
+
+If the actual module requires 5 V, do not simply move VCC to 5 V and leave
+REC directly connected to the ESP32. Use suitable level translation in both
+directions unless the module's documented interface explicitly allows otherwise.
+The following is a conditional topology, not confirmation that this module is
+5 V-rated. Both logic levels and the module supply rating must be verified first.
+
+```mermaid
+flowchart LR
+   SUPPLY["Verified regulated 5 V supply"] --> IVCC5["IR module VCC"]
+   TX4["ESP32 GPIO4"] --> TXLS["TX translator: 3.3 V to 5 V"]
+   TXLS --> SND5["IR module SND"]
+   REC5["IR module REC"] --> RXLS["RX translator: 5 V to 3.3 V"]
+   RXLS --> RX5["ESP32 GPIO5"]
+   COMMON["Common GND: ESP32, IR module, both translators, 5 V supply"]
+```
+
+For two SN74LVC1T45 breakouts, wire by the breakout's signal labels and its
+datasheet, not by an assumed package pin order:
+
+| Translator | A port | B port | VCCA | VCCB | DIR |
+| --- | --- | --- | --- | --- | --- |
+| TX | ESP32 GPIO4 | Module SND | ESP32 3V3 | Verified module 5 V supply | Tie to VCCA: A to B |
+| RX | ESP32 GPIO5 | Module REC | ESP32 3V3 | Verified module 5 V supply | Tie to GND: B to A |
+
+Connect both translator grounds to the common ground. Bypass each VCCA and
+VCCB to ground with 100 nF at the device, unless fitted on the breakout.
+Supply both sides as specified by the translator datasheet; never leave DIR
+floating. A generic I2C-only MOSFET shifter is not automatically a suitable
+replacement for a driven IR transmit signal. An ordinary series resistor
+alone does not make a 5 V receive signal safe for ESP32 GPIO.
+
+For this topology, power the ESP32 from USB and the IR module from a separately
+verified, current-rated 5 V rail, with grounds connected. Do not connect an
+external 5 V source to the ESP32 5V pin while USB is also attached unless that
+exact development board documents safe power OR-ing. Do not tie a 5 V rail to
+3V3. The extra translator boards and harness still require a physical fit check.
+
+### Before Powering
+
+1. Confirm the module supply rating, input/output voltage levels, pin labels,
+   and peak current. Do not connect REC to the ESP32 until its voltage range
+   is known. If testing the module separately, use a current-limited supply
+   within its confirmed rating; check both idle and active signal levels.
+2. Disconnect power while wiring. Check VCC/GND polarity, common ground,
+   connector orientation, and absence of shorts or exposed conductors.
+3. Configure GPIO4 as the IR transmit output and GPIO5 as the receive input
+   in firmware. Verify SND's inactive polarity before enabling transmission.
+   If SND is a raw LED-driver input, generate the required modulated carrier
+   (typically 38 kHz for this listing); the listing title alone does not prove
+   that the board generates a carrier internally. These are not UART TX/RX links.
+4. Test reception and short transmit bursts with the lid open. Confirm that
+   the power rail stays stable, nothing overheats, and the LEDs are not left
+   continuously energized. Then check cable, screw-head, and wire clearance
+   before closing the enclosure. There is no hardware-verified firmware in
+   this repository yet.
+
 ## ESP32 Reference Assembly
 
 Both the native SolidCraft design and the reference JSON assembly now include
@@ -355,3 +531,10 @@ IRKeeper = (IR_keeper_outer_X-IR_keeper_inner_X)*IR_PCB_W*IR_keeper_T
 - [IR module listing](https://de.aliexpress.com/item/1005013021929851.html)
 - [Espressif DevKitC-1 v1.1 documentation](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html)
 - [Espressif mechanical drawing](https://dl.espressif.com/dl/schematics/esp_idf/DXF_ESP32-S3-DevKitC-1_V1.1_20220429.pdf)
+- [TI SN74LVC1T45 level translator and datasheet](https://www.ti.com/product/SN74LVC1T45)
+
+The Espressif guide supports the example GPIO assignments and board power
+options; it is not a pinout guarantee for the user's clone. The TI source
+supports the conditional level-shifter topology, not the IR module's supply
+rating. No verified electrical specification for the exact IR board revision
+has been obtained.
