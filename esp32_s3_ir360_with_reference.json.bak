@@ -1,5 +1,5 @@
 {
-  "format": "solidcraft/27",
+  "format": "solidcraft/28",
   "name": "esp32_s3_ir360_with_reference",
   "units": "mm",
   "params": [
@@ -188,6 +188,88 @@
       "expr": "18 mm",
       "unit": "mm",
       "comment": "Fixed retainer screw half-spacing along Y.",
+      "model": false
+    },
+    {
+      "name": "IR_ref_T",
+      "expr": "1.6 mm",
+      "unit": "mm",
+      "comment": "Photo-recreated reference ONLY; fixed assumed PCB thickness.",
+      "model": false
+    },
+    {
+      "name": "IR_ref_R",
+      "expr": "1.5 mm",
+      "unit": "mm",
+      "comment": "Photo reference ONLY; fixed estimated PCB corner radius.",
+      "model": false
+    },
+    {
+      "name": "IR_ref_hole_D",
+      "expr": "3.2 mm",
+      "unit": "mm",
+      "comment": "Photo reference ONLY; fixed estimated mounting-hole diameter.",
+      "model": false
+    },
+    {
+      "name": "IR_ref_LED_R",
+      "expr": "2.5 mm",
+      "unit": "mm",
+      "comment": "Photo reference ONLY; fixed assumed 5 mm LED package radius.",
+      "model": false
+    },
+    {
+      "name": "IR_ref_LED_H",
+      "expr": "4.5 mm",
+      "unit": "mm",
+      "comment": "Photo reference ONLY; fixed LED barrel length, excluding hemisphere.",
+      "model": false
+    },
+    {
+      "name": "IR_ref_LED_X",
+      "expr": "8 mm",
+      "unit": "mm",
+      "comment": "Photo reference ONLY; fixed LED center X offset.",
+      "model": false
+    },
+    {
+      "name": "IR_ref_LED_Y",
+      "expr": "6 mm",
+      "unit": "mm",
+      "comment": "Photo reference ONLY; fixed LED center Y offset.",
+      "model": false
+    },
+    {
+      "name": "IR_ref_LED_Z",
+      "expr": "1.2 mm",
+      "unit": "mm",
+      "comment": "Photo reference ONLY; fixed LED flange base height above PCB.",
+      "model": false
+    },
+    {
+      "name": "d128",
+      "expr": "IR_PCB_W",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d129",
+      "expr": "IR_PCB_L",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "IR_ref_axis_XY",
+      "expr": "0.2988362387301198",
+      "unit": "",
+      "comment": "Fixed sin(25 deg)/sqrt(2), radial LED direction coefficient; reference only.",
+      "model": false
+    },
+    {
+      "name": "IR_ref_axis_Z",
+      "expr": "0.9063077870366499",
+      "unit": "",
+      "comment": "Fixed cos(25 deg), radial LED direction coefficient; reference only.",
       "model": false
     }
   ],
@@ -9680,9 +9762,1045 @@
         "32 mm-ESP_PCB_half_W+ESP_edge_overlap",
         "ESP_clamp_Z"
       ]
+    },
+    {
+      "id": 377,
+      "name": "IRReferencePCBOutline",
+      "suppressed": false,
+      "param_names": [
+        "d127"
+      ],
+      "component": 375,
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XY"
+        },
+        "distance": "-IR_ref_T"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [
+              0.0,
+              0.0
+            ],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [
+              -15.0,
+              -10.0
+            ],
+            "fixed": false
+          },
+          {
+            "id": "p2",
+            "pos": [
+              15.0,
+              -10.0
+            ],
+            "fixed": false
+          },
+          {
+            "id": "p3",
+            "pos": [
+              15.0,
+              10.0
+            ],
+            "fixed": false
+          },
+          {
+            "id": "p4",
+            "pos": [
+              -15.0,
+              10.0
+            ],
+            "fixed": false
+          },
+          {
+            "id": "p5",
+            "pos": [
+              0.0,
+              0.0
+            ],
+            "fixed": false
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 4,
+            "b": 1,
+            "construction": false
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 1,
+            "b": 3,
+            "construction": true
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 2,
+            "b": 4,
+            "construction": true
+          }
+        ],
+        "constraints": [
+          {
+            "id": "k1",
+            "type": "horizontal",
+            "l": 0
+          },
+          {
+            "id": "k2",
+            "type": "horizontal",
+            "l": 2
+          },
+          {
+            "id": "k3",
+            "type": "vertical",
+            "l": 1
+          },
+          {
+            "id": "k4",
+            "type": "vertical",
+            "l": 3
+          },
+          {
+            "id": "k5",
+            "type": "midpoint",
+            "p": 5,
+            "l": 4
+          },
+          {
+            "id": "k6",
+            "type": "coincident",
+            "p": 0,
+            "q": 5
+          },
+          {
+            "id": "k7",
+            "type": "length",
+            "l": 1,
+            "value": 20.0,
+            "param": "d128"
+          },
+          {
+            "id": "k8",
+            "type": "length",
+            "l": 0,
+            "value": 30.0,
+            "param": "d129"
+          }
+        ],
+        "counters": {
+          "k": 8,
+          "l": 6,
+          "p": 5
+        }
+      }
+    },
+    {
+      "id": 378,
+      "name": "IRReferencePCBBlank",
+      "suppressed": false,
+      "body_names": [
+        "IR_Reference_PCB"
+      ],
+      "param_names": [
+        "d130"
+      ],
+      "component": 375,
+      "type": "extrude",
+      "sketch": 377,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "IR_ref_T",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "new_body"
+    },
+    {
+      "id": 379,
+      "name": "IRReferencePCBAtLid",
+      "suppressed": false,
+      "param_names": [
+        "d131",
+        "d132",
+        "d133"
+      ],
+      "component": 375,
+      "type": "move",
+      "bodies": [
+        "IR_Reference_PCB"
+      ],
+      "translate": [
+        "lid_X",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "id": 380,
+      "name": "IRReferencePCBCorners",
+      "suppressed": false,
+      "param_names": [
+        "d134"
+      ],
+      "component": 375,
+      "edge_refs": [
+        {
+          "dir": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "min": [
+            77.0,
+            -10.0,
+            -1.6
+          ],
+          "max": [
+            107.0,
+            10.0,
+            0.0
+          ]
+        },
+        {
+          "dir": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "min": [
+            77.0,
+            -10.0,
+            -1.6
+          ],
+          "max": [
+            107.0,
+            10.0,
+            0.0
+          ]
+        },
+        {
+          "dir": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "min": [
+            77.0,
+            -10.0,
+            -1.6
+          ],
+          "max": [
+            107.0,
+            10.0,
+            0.0
+          ]
+        },
+        {
+          "dir": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "min": [
+            77.0,
+            -10.0,
+            -1.6
+          ],
+          "max": [
+            107.0,
+            10.0,
+            0.0
+          ]
+        }
+      ],
+      "edge_names": [
+        "F378:side:l2|F378:side:l3",
+        "F378:side:l3|F378:side:l4",
+        "F378:side:l1|F378:side:l2",
+        "F378:side:l1|F378:side:l4"
+      ],
+      "type": "fillet",
+      "edges": [
+        [
+          107.0,
+          10.0,
+          -0.8
+        ],
+        [
+          77.0,
+          10.0,
+          -0.8
+        ],
+        [
+          107.0,
+          -10.0,
+          -0.8
+        ],
+        [
+          77.0,
+          -10.0,
+          -0.8
+        ]
+      ],
+      "radius": "IR_ref_R"
+    },
+    {
+      "id": 381,
+      "name": "IRReferenceMountHole",
+      "suppressed": false,
+      "param_names": [
+        "d135",
+        "d136"
+      ],
+      "component": 375,
+      "participants": [
+        "IR_Reference_PCB"
+      ],
+      "type": "cylinder",
+      "base": [
+        "lid_X+IR_pitch_X/2",
+        "IR_pitch_Y/2",
+        "-IR_ref_T-1 mm"
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "radius": "(IR_ref_hole_D) / 2",
+      "height": "IR_ref_T+2 mm",
+      "operation": "cut"
+    },
+    {
+      "id": 382,
+      "name": "FourIRReferenceMountHoles",
+      "suppressed": false,
+      "param_names": [
+        "d137",
+        "d138",
+        "d139",
+        "d140"
+      ],
+      "component": 375,
+      "type": "pattern",
+      "features": [
+        "IRReferenceMountHole"
+      ],
+      "pattern": {
+        "type": "rectangular",
+        "dir1": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "count1": "2",
+        "spacing1": "IR_pitch_X",
+        "dir2": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "count2": "2",
+        "spacing2": "IR_pitch_Y"
+      }
+    },
+    {
+      "id": 383,
+      "name": "IRReferenceLEDBarrelNE",
+      "suppressed": false,
+      "body_names": [
+        "IR_LED_NE"
+      ],
+      "param_names": [
+        "d141",
+        "d142"
+      ],
+      "component": 375,
+      "type": "cylinder",
+      "base": [
+        "lid_X+IR_ref_LED_X+0.8 mm*IR_ref_axis_XY",
+        "IR_ref_LED_Y+0.8 mm*IR_ref_axis_XY",
+        "IR_ref_LED_Z+0.8 mm*IR_ref_axis_Z"
+      ],
+      "axis": [
+        0.29883623873011983,
+        0.29883623873011983,
+        0.90630778703665
+      ],
+      "radius": "IR_ref_LED_R",
+      "height": "IR_ref_LED_H",
+      "operation": "new_body"
+    },
+    {
+      "id": 384,
+      "name": "IRReferenceLEDRoundedLensNE",
+      "suppressed": false,
+      "body_names": [
+        "IR_LED_Dome_NE"
+      ],
+      "param_names": [
+        "d143"
+      ],
+      "component": 375,
+      "type": "sphere",
+      "center": [
+        "lid_X+IR_ref_LED_X+(IR_ref_LED_H+0.8 mm)*IR_ref_axis_XY",
+        "IR_ref_LED_Y+(IR_ref_LED_H+0.8 mm)*IR_ref_axis_XY",
+        "IR_ref_LED_Z+(IR_ref_LED_H+0.8 mm)*IR_ref_axis_Z"
+      ],
+      "radius": "IR_ref_LED_R",
+      "operation": "new_body"
+    },
+    {
+      "id": 385,
+      "name": "IRReferenceLEDFlange",
+      "suppressed": false,
+      "body_names": [
+        "IR_LED_Flange_NE"
+      ],
+      "param_names": [
+        "d144",
+        "d145"
+      ],
+      "component": 375,
+      "type": "cylinder",
+      "base": [
+        "lid_X+IR_ref_LED_X",
+        "IR_ref_LED_Y",
+        "IR_ref_LED_Z"
+      ],
+      "axis": [
+        0.29883623873011983,
+        0.29883623873011983,
+        0.90630778703665
+      ],
+      "radius": "2.8",
+      "height": "0.8",
+      "operation": "new_body"
+    },
+    {
+      "id": 386,
+      "name": "IRReferenceLEDLeadA",
+      "suppressed": false,
+      "body_names": [
+        "IR_LED_Lead_A_NE"
+      ],
+      "param_names": [
+        "d146",
+        "d147"
+      ],
+      "component": 375,
+      "type": "cylinder",
+      "base": [
+        "lid_X+IR_ref_LED_X-1.27 mm",
+        "IR_ref_LED_Y",
+        -2.2
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "radius": "0.25",
+      "height": "3.4",
+      "operation": "new_body"
+    },
+    {
+      "id": 387,
+      "name": "IRReferenceLEDLeadB",
+      "suppressed": false,
+      "body_names": [
+        "IR_LED_Lead_B_NE"
+      ],
+      "param_names": [
+        "d148",
+        "d149"
+      ],
+      "component": 375,
+      "type": "cylinder",
+      "base": [
+        "lid_X+IR_ref_LED_X+1.27 mm",
+        "IR_ref_LED_Y",
+        -2.2
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "radius": "0.25",
+      "height": "3.4",
+      "operation": "new_body"
+    },
+    {
+      "id": 388,
+      "name": "IRReferenceSouthLED",
+      "suppressed": false,
+      "body_names": [
+        "IR_LED_SE",
+        "IR_LED_Dome_NE (2)",
+        "IR_LED_Flange_NE (2)",
+        "IR_LED_Lead_A_NE (2)",
+        "IR_LED_Lead_B_NE (2)"
+      ],
+      "component": 375,
+      "type": "mirror",
+      "features": [],
+      "plane": {
+        "type": "origin",
+        "name": "XZ"
+      },
+      "bodies": [
+        "IR_LED_NE",
+        "IR_LED_Dome_NE",
+        "IR_LED_Flange_NE",
+        "IR_LED_Lead_A_NE",
+        "IR_LED_Lead_B_NE"
+      ],
+      "placements": [
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ]
+      ]
+    },
+    {
+      "id": 389,
+      "name": "IRReferenceWestLEDs",
+      "suppressed": false,
+      "body_names": [
+        "IR_LED_NW",
+        "IR_LED_Dome_NE (3)",
+        "IR_LED_Flange_NE (3)",
+        "IR_LED_Lead_A_NE (3)",
+        "IR_LED_Lead_B_NE (3)",
+        "IR_LED_SW",
+        "IR_LED_Dome_NE (2) (2)",
+        "IR_LED_Flange_NE (2) (2)",
+        "IR_LED_Lead_A_NE (2) (2)",
+        "IR_LED_Lead_B_NE (2) (2)"
+      ],
+      "component": 375,
+      "type": "mirror",
+      "features": [],
+      "plane": {
+        "type": "placed",
+        "origin": [
+          "lid_X",
+          0.0,
+          0.0
+        ],
+        "x_dir": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_dir": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "bodies": [
+        "IR_LED_NE",
+        "IR_LED_Dome_NE",
+        "IR_LED_Flange_NE",
+        "IR_LED_Lead_A_NE",
+        "IR_LED_Lead_B_NE",
+        "IR_LED_SE",
+        "IR_LED_Dome_NE (2)",
+        "IR_LED_Flange_NE (2)",
+        "IR_LED_Lead_A_NE (2)",
+        "IR_LED_Lead_B_NE (2)"
+      ],
+      "placements": [
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ],
+        [
+          376
+        ]
+      ]
+    },
+    {
+      "id": 390,
+      "name": "IRReferenceReceiverPackage",
+      "suppressed": false,
+      "body_names": [
+        "IR_Receiver_Package"
+      ],
+      "param_names": [
+        "d150",
+        "d151",
+        "d152"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X+10 mm",
+        -2.5,
+        0.0
+      ],
+      "length": "4",
+      "width": "5",
+      "height": "3.5",
+      "operation": "new_body"
+    },
+    {
+      "id": 391,
+      "name": "IRReferenceReceiverLens",
+      "suppressed": false,
+      "body_names": [
+        "IR_Receiver_Lens"
+      ],
+      "param_names": [
+        "d153"
+      ],
+      "component": 375,
+      "type": "sphere",
+      "center": [
+        "lid_X+12 mm",
+        0.0,
+        3.5
+      ],
+      "radius": "1.8",
+      "operation": "new_body"
+    },
+    {
+      "id": 392,
+      "name": "IRReferenceFourPinHeaderHousing",
+      "suppressed": false,
+      "body_names": [
+        "IR_Header_Housing"
+      ],
+      "param_names": [
+        "d154",
+        "d155",
+        "d156"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X-13.27 mm",
+        -5.08,
+        0.0
+      ],
+      "length": "2.54",
+      "width": "10.16",
+      "height": "2.5",
+      "operation": "new_body"
+    },
+    {
+      "id": 393,
+      "name": "IRReferenceHeaderVCC",
+      "suppressed": false,
+      "body_names": [
+        "IR_Header_Pin_VCC"
+      ],
+      "param_names": [
+        "d157",
+        "d158",
+        "d159"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X-12.32 mm",
+        -4.13,
+        -2.6
+      ],
+      "length": "0.64",
+      "width": "0.64",
+      "height": "11.1",
+      "operation": "new_body"
+    },
+    {
+      "id": 394,
+      "name": "IRReferenceHeaderREC",
+      "suppressed": false,
+      "body_names": [
+        "IR_Header_Pin_REC"
+      ],
+      "param_names": [
+        "d160",
+        "d161",
+        "d162"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X-12.32 mm",
+        -1.59,
+        -2.6
+      ],
+      "length": "0.64",
+      "width": "0.64",
+      "height": "11.1",
+      "operation": "new_body"
+    },
+    {
+      "id": 395,
+      "name": "IRReferenceHeaderSND",
+      "suppressed": false,
+      "body_names": [
+        "IR_Header_Pin_SND"
+      ],
+      "param_names": [
+        "d163",
+        "d164",
+        "d165"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X-12.32 mm",
+        0.95,
+        -2.6
+      ],
+      "length": "0.64",
+      "width": "0.64",
+      "height": "11.1",
+      "operation": "new_body"
+    },
+    {
+      "id": 396,
+      "name": "IRReferenceHeaderGND",
+      "suppressed": false,
+      "body_names": [
+        "IR_Header_Pin_GND"
+      ],
+      "param_names": [
+        "d166",
+        "d167",
+        "d168"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X-12.32 mm",
+        3.49,
+        -2.6
+      ],
+      "length": "0.64",
+      "width": "0.64",
+      "height": "11.1",
+      "operation": "new_body"
+    },
+    {
+      "id": 397,
+      "name": "IRReferenceTopResistorA",
+      "suppressed": false,
+      "body_names": [
+        "IR_Resistor_Top_A"
+      ],
+      "param_names": [
+        "d169",
+        "d170",
+        "d171"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X-3 mm",
+        7.5,
+        0.0
+      ],
+      "length": "2",
+      "width": "1",
+      "height": "0.6",
+      "operation": "new_body"
+    },
+    {
+      "id": 398,
+      "name": "IRReferenceTopResistorB",
+      "suppressed": false,
+      "body_names": [
+        "IR_Resistor_Top_B"
+      ],
+      "param_names": [
+        "d172",
+        "d173",
+        "d174"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X+1 mm",
+        7.5,
+        0.0
+      ],
+      "length": "2",
+      "width": "1",
+      "height": "0.6",
+      "operation": "new_body"
+    },
+    {
+      "id": 399,
+      "name": "IRReferenceBottomResistorA",
+      "suppressed": false,
+      "body_names": [
+        "IR_Resistor_Bottom_A"
+      ],
+      "param_names": [
+        "d175",
+        "d176",
+        "d177"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X-3 mm",
+        -8.5,
+        0.0
+      ],
+      "length": "2",
+      "width": "1",
+      "height": "0.6",
+      "operation": "new_body"
+    },
+    {
+      "id": 400,
+      "name": "IRReferenceBottomResistorB",
+      "suppressed": false,
+      "body_names": [
+        "IR_Resistor_Bottom_B"
+      ],
+      "param_names": [
+        "d178",
+        "d179",
+        "d180"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X-3 mm",
+        -7.0,
+        0.0
+      ],
+      "length": "2",
+      "width": "1",
+      "height": "0.6",
+      "operation": "new_body"
+    },
+    {
+      "id": 401,
+      "name": "IRReferenceTransistor",
+      "suppressed": false,
+      "body_names": [
+        "IR_Transistor"
+      ],
+      "param_names": [
+        "d181",
+        "d182",
+        "d183"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X",
+        -6.5,
+        0.0
+      ],
+      "length": "2.8",
+      "width": "2.3",
+      "height": "1.2",
+      "operation": "new_body"
+    },
+    {
+      "id": 402,
+      "name": "IRReferenceReceiverCircuitA",
+      "suppressed": false,
+      "body_names": [
+        "IR_Receiver_Circuit_A"
+      ],
+      "param_names": [
+        "d184",
+        "d185",
+        "d186"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X+4.5 mm",
+        1.0,
+        0.0
+      ],
+      "length": "0.9",
+      "width": "1.8",
+      "height": "0.45",
+      "operation": "new_body"
+    },
+    {
+      "id": 403,
+      "name": "IRReferenceReceiverCircuitB",
+      "suppressed": false,
+      "body_names": [
+        "IR_Receiver_Circuit_B"
+      ],
+      "param_names": [
+        "d187",
+        "d188",
+        "d189"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X+6 mm",
+        1.0,
+        0.0
+      ],
+      "length": "0.9",
+      "width": "1.8",
+      "height": "0.45",
+      "operation": "new_body"
+    },
+    {
+      "id": 404,
+      "name": "IRReferenceReceiverCircuitC",
+      "suppressed": false,
+      "body_names": [
+        "IR_Receiver_Circuit_C"
+      ],
+      "param_names": [
+        "d190",
+        "d191",
+        "d192"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X+4.5 mm",
+        -1.4,
+        0.0
+      ],
+      "length": "0.9",
+      "width": "1.8",
+      "height": "0.45",
+      "operation": "new_body"
+    },
+    {
+      "id": 405,
+      "name": "IRReferenceReceiverCircuitD",
+      "suppressed": false,
+      "body_names": [
+        "IR_Receiver_Circuit_D"
+      ],
+      "param_names": [
+        "d193",
+        "d194",
+        "d195"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X+6 mm",
+        -1.4,
+        0.0
+      ],
+      "length": "0.9",
+      "width": "1.8",
+      "height": "0.45",
+      "operation": "new_body"
+    },
+    {
+      "id": 406,
+      "name": "IRReferenceStatusLED",
+      "suppressed": false,
+      "body_names": [
+        "IR_Status_LED"
+      ],
+      "param_names": [
+        "d196",
+        "d197",
+        "d198"
+      ],
+      "component": 375,
+      "type": "box",
+      "corner": [
+        "lid_X+11 mm",
+        -4.8,
+        0.0
+      ],
+      "length": "1.6",
+      "width": "0.8",
+      "height": "0.7",
+      "operation": "new_body"
     }
   ],
-  "next_id": 375,
+  "next_id": 407,
   "components": [
     {
       "id": 32,
@@ -10218,6 +11336,11 @@
       "id": 357,
       "name": "22way PCB Header",
       "parent": 32
+    },
+    {
+      "id": 375,
+      "name": "IR360_REFERENCE_ESTIMATED_NOT_FOR_PRINT",
+      "parent": 0
     }
   ],
   "occurrences": [
@@ -17509,6 +18632,39 @@
           -1.33226762955019e-14,
           2.22044604925031e-15,
           -25.4,
+          1.0
+        ]
+      ],
+      "grounded": false
+    },
+    {
+      "id": 376,
+      "component": 375,
+      "parent": 0,
+      "name": "IR360_REFERENCE_ESTIMATED_NOT_FOR_PRINT:1",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
           1.0
         ]
       ],
@@ -28964,6 +30120,352 @@
     "IR_pitch_Y",
     "case_L"
   ],
+  "appearances": {
+    "bodies": {
+      "IR_Header_Housing": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Header_Pin_GND": {
+        "name": "Custom",
+        "color": [
+          214,
+          184,
+          91
+        ],
+        "opacity": 1.0
+      },
+      "IR_Header_Pin_REC": {
+        "name": "Custom",
+        "color": [
+          214,
+          184,
+          91
+        ],
+        "opacity": 1.0
+      },
+      "IR_Header_Pin_SND": {
+        "name": "Custom",
+        "color": [
+          214,
+          184,
+          91
+        ],
+        "opacity": 1.0
+      },
+      "IR_Header_Pin_VCC": {
+        "name": "Custom",
+        "color": [
+          214,
+          184,
+          91
+        ],
+        "opacity": 1.0
+      },
+      "IR_LED_Dome_NE": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_Dome_NE (2)": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_Dome_NE (2) (2)": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_Dome_NE (3)": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_Flange_NE": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_Flange_NE (2)": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_Flange_NE (2) (2)": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_Flange_NE (3)": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_Lead_A_NE": {
+        "name": "Custom",
+        "color": [
+          184,
+          189,
+          196
+        ],
+        "opacity": 1.0
+      },
+      "IR_LED_Lead_A_NE (2)": {
+        "name": "Custom",
+        "color": [
+          184,
+          189,
+          196
+        ],
+        "opacity": 1.0
+      },
+      "IR_LED_Lead_A_NE (2) (2)": {
+        "name": "Custom",
+        "color": [
+          184,
+          189,
+          196
+        ],
+        "opacity": 1.0
+      },
+      "IR_LED_Lead_A_NE (3)": {
+        "name": "Custom",
+        "color": [
+          184,
+          189,
+          196
+        ],
+        "opacity": 1.0
+      },
+      "IR_LED_Lead_B_NE": {
+        "name": "Custom",
+        "color": [
+          184,
+          189,
+          196
+        ],
+        "opacity": 1.0
+      },
+      "IR_LED_Lead_B_NE (2)": {
+        "name": "Custom",
+        "color": [
+          184,
+          189,
+          196
+        ],
+        "opacity": 1.0
+      },
+      "IR_LED_Lead_B_NE (2) (2)": {
+        "name": "Custom",
+        "color": [
+          184,
+          189,
+          196
+        ],
+        "opacity": 1.0
+      },
+      "IR_LED_Lead_B_NE (3)": {
+        "name": "Custom",
+        "color": [
+          184,
+          189,
+          196
+        ],
+        "opacity": 1.0
+      },
+      "IR_LED_NE": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_NW": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_SE": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_LED_SW": {
+        "name": "Custom",
+        "color": [
+          210,
+          237,
+          242
+        ],
+        "opacity": 0.65
+      },
+      "IR_Receiver_Circuit_A": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Receiver_Circuit_B": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Receiver_Circuit_C": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Receiver_Circuit_D": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Receiver_Lens": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Receiver_Package": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Reference_PCB": {
+        "name": "Custom",
+        "color": [
+          18,
+          138,
+          168
+        ],
+        "opacity": 1.0
+      },
+      "IR_Resistor_Bottom_A": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Resistor_Bottom_B": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Resistor_Top_A": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Resistor_Top_B": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      },
+      "IR_Status_LED": {
+        "name": "Custom",
+        "color": [
+          238,
+          231,
+          203
+        ],
+        "opacity": 1.0
+      },
+      "IR_Transistor": {
+        "name": "Custom",
+        "color": [
+          36,
+          39,
+          43
+        ],
+        "opacity": 1.0
+      }
+    }
+  },
   "body_components": {
     "22way PCB Header": 357,
     "22way PCB Header (10)": 357,

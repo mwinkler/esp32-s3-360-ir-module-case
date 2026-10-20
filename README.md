@@ -3,6 +3,24 @@
 Adjustable, unverified-fit prototype for an Espressif ESP32-S3-DevKitC-1
 and the Jessinie 38 kHz IR transmitter/receiver linked below.
 
+## Preview
+
+![Open enclosure with the ESP32 retained in the base and the IR module beneath the separate lid](preview.png)
+
+The base and lid are shown apart to expose the board retainers and IR opening.
+Both electronics models are non-print references; hardware fit remains unverified.
+
+## IR Module Reference
+
+| Recreated model beneath the lid | Original module reference photo |
+| --- | --- |
+| <img src="ir_reference_preview.png" alt="Close-up of the recreated IR PCB, four tilted LEDs, receiver, and header beneath the lid" width="500"> | <img src="IR%20Module%201.png" alt="Supplied product photo of the blue IR360 module with four LEDs, receiver, mounting holes, and pin header" width="500"> |
+
+The supplied photo guided the component layout. PCB dimensions, LED tilt,
+and package sizes are estimates, not measurements from the photo. See
+[Recreated IR Module Reference](#recreated-ir-module-reference) for assumptions
+and the possible LED-base clearance issue at the lid mounting fingers.
+
 ## Files
 
 - [Editable SolidCraft design](esp32_s3_ir360_prototype.solidcraft)
@@ -13,6 +31,8 @@ and the Jessinie 38 kHz IR transmitter/receiver linked below.
 - [Preview](preview.png)
 - [Assembly with ESP32 reference, editable JSON](esp32_s3_ir360_with_reference.json)
 - [Reference assembly preview](reference_preview.png)
+- [Recreated IR module close-up](ir_reference_preview.png)
+- [Recreated IR module STEP, reference only](ir_module_reference.step)
 - [Downloaded YD-ESP32-S3 reference STEP](YD-ESP32-S3.step)
 - [Reference repository licence](YD-ESP32-S3-LICENSE.txt)
 
@@ -24,7 +44,8 @@ base for visibility. The revised base includes taller PCB supports, four
 retainer screw bosses, side guides, and end stops. Two removable bars secure
 the PCB edges without requiring mounting holes in the board. They are shown
 installed in the editable assembly and laid out separately in the STEP export.
-The imported component is named ESP32_S3_REFERENCE_NOT_FOR_PRINT: exclude it
+The imported component is named ESP32_S3_REFERENCE_NOT_FOR_PRINT. The recreated
+IR component is named IR360_REFERENCE_ESTIMATED_NOT_FOR_PRINT. Exclude both
 from any print export. Open the reference JSON as a SolidCraft design, not as
 a command script.
 
@@ -42,7 +63,7 @@ bounds are approximately [-29.2088, -13.975, 2.31] to
 [34.815, 13.975, 14.22]. The modeled header pins clear the 2 mm floor by
 0.31 mm; highest modeled components clear the lid underside by 5.78 mm.
 These are geometric reference clearances, not manufacturing tolerances or
-a complete interference assessment with the unmodeled IR board and wiring.
+a complete interference assessment with the estimated IR reference and wiring.
 
 Both USB-C sockets face the negative-X access opening. Their fronts are
 approximately 9.79 mm behind the outside wall, so actual cable plug reach
@@ -102,6 +123,60 @@ author. Its licence is retained alongside the unmodified STEP.
 Source STEP SHA-256:
 EDC0685479A0C1A91ABD1ADF4516EC2784258A58095663B3F4272A125D5CF624.
 
+## Recreated IR Module Reference
+
+No usable CAD model was found for the exact IR_Rec_Send_V1.1 / 303IRRECSE1
+markings visible in the supplied photos. A simplified 38-body visual reference
+was recreated from their component layout. It includes a blue rounded PCB,
+four mounting holes, four outward-tilted IR LEDs with rounded lenses and leads,
+a black receiver package, a four-pin header, and simplified component blocks.
+It is included in both editable assembly formats, not the printable STLs or
+the enclosure-only STEP.
+
+The photos do not establish an accurate physical scale. The reference keeps
+the previous estimated 30 x 20 mm PCB and 24 x 14 mm hole pitch, rather than
+claiming new measured dimensions. Assumptions are:
+
+| Reference item | Assumed value |
+| --- | --- |
+| PCB thickness / corner radius | 1.6 / 1.5 mm |
+| Mounting-hole diameter | 3.2 mm |
+| IR LED diameter / barrel length | 5 / 4.5 mm |
+| LED center offsets from PCB center | +/-8 mm X, +/-6 mm Y |
+| LED outward tilt | 25 degrees, diagonally away from center |
+| Receiver body | 4 x 5 x 3.5 mm, rounded lens on top |
+| Header | Four pins, 2.54 mm pitch, upright as photographed |
+
+The PCB top is flush with the displayed lid underside at Z = 0, centered at
+X = lid_X (92 mm by default). The reference envelope is approximately
+[77, -10.0838, -2.6] to [107, 10.0838, 8.5034]. To place it over the base with
+the lid assembled, translate it [-lid_X, 0, case_H], just like the lid.
+Its lowest modeled pin is then Z = 17.4 mm and its highest lens Z = 28.5034 mm.
+The standalone reference STEP retains these display-layout coordinates.
+
+This approximate model suggests possible contact between the outward-tilted
+LED bases and the remaining lid mounting fingers, and near-contact between
+the header housing and those fingers. This task did not change the lid or
+claim optical clearance. Verify actual component positions and package sizes
+before printing; window or finger changes may be needed after measurement.
+
+The rounded LED/receiver lenses are separate overlapping reference solids,
+not watertight fused electronic packages. Leads are simplified and PCB
+lead-through holes, tracks, silkscreen, solder fillets, and fine package detail
+are omitted. Do not use summed reference-body volume for physical mass or
+treat this visual reconstruction as a certified manufacturing model.
+
+The PCB sketch is fully constrained. Corner rounding is authored before
+placement so that changing case_L does not invalidate its edge references.
+Sequential walks between the default and upper endpoints of case_L = 78..82,
+IR_pitch_X = 24..26, and IR_pitch_Y = 14..16 rebuilt without errors and were
+returned to defaults. The PCB stays at 905.444046 mm^3 (analytic 905.437880);
+its X center moves from 92 to 96 when the case length grows by 4 mm.
+New IR timeline features have no errors or warnings. Primitive measurements
+agree with independent formulas within 0.02 percent, including tilted LED
+cylinders. Base and lid volumes are unchanged. No expensive full interference
+check against the detailed ESP32 import was attempted.
+
 ## Dimensions And Assumptions
 
 All dimensions are millimetres.
@@ -119,15 +194,16 @@ All dimensions are millimetres.
 | USB access, negative-X end | 26 wide x 8 high; Z = 7 to 15 | Cable and connector fit unverified |
 | IR PCB | 30 x 20 | ESTIMATED, not supplied by seller |
 | IR hole spacing | 24 x 14 | ESTIMATED, not supplied by seller |
-| IR hole diameter | Approximately 3.2 | ESTIMATED; not represented as PCB geometry |
+| IR hole diameter | Approximately 3.2 | ESTIMATED; represented in the reference PCB |
 | IR mounting | Flush beneath lid | Four 4 mm-wide fingers with 2.8 mm clearance holes |
 | IR optical window envelope | 36 x 26 | Through-cut, except for the four mounting fingers |
 
 The listing photographs show four emitters, a receiver, and four corner
 mounting holes, but contain no mechanical dimensions. Its linked PDF could
-not be extracted. No fitted IR model or full interference simulation was
-used. An approximate ESP32 reference is available in the separate assembly
-described above. This is not a guaranteed-fit enclosure.
+not be extracted. No dimensionally verified IR model or full interference
+simulation was used. Approximate ESP32 and photo-recreated IR references are
+included in the editable assemblies as described above. This is not a
+guaranteed-fit enclosure.
 
 The corrected lid has a real through-window: the former solid deck, raised
 guard, and raised mounting posts have been removed. Mount the IR PCB beneath
@@ -188,7 +264,7 @@ Favourite driving parameters have these tested endpoint ranges:
 | IR_pitch_Y | 14 | 14 to 16 |
 
 Other driving dimensions are documented as fixed. IR_PCB_L and IR_PCB_W are
-reference-only estimates: changing them does not resize the window.
+estimates that now drive only the recreated reference PCB, not the window.
 IR_window_L = 36, IR_window_W = 26, and IR_tab_W = 4 are fixed dimensions.
 Changing IR mounting pitches moves the clearance holes and mounting fingers,
 rather than providing physical slots. Larger changes require a new clearance
