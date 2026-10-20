@@ -10,6 +10,58 @@ and the Jessinie 38 kHz IR transmitter/receiver linked below.
 - [Lid with IR through-window STL](lid_ir_deck.stl)
 - [STEP, both parts in print layout](esp32_s3_ir360_prototype.step)
 - [Preview](preview.png)
+- [Assembly with ESP32 reference, editable JSON](esp32_s3_ir360_with_reference.json)
+- [Reference assembly preview](reference_preview.png)
+- [Downloaded YD-ESP32-S3 reference STEP](YD-ESP32-S3.step)
+- [Reference repository licence](YD-ESP32-S3-LICENSE.txt)
+
+## ESP32 Reference Assembly
+
+Both the native SolidCraft design and the reference JSON assembly now include
+the downloaded YD-ESP32-S3 model inside the base. The lid remains beside the
+base for visibility. The enclosure-only STEP and printable STLs are unchanged.
+The imported component is named ESP32_S3_REFERENCE_NOT_FOR_PRINT: exclude it
+from any print export. Open the reference JSON as a SolidCraft design, not as
+a command script.
+
+This is an approximate dual-USB-C DevKitC-clone reference, not a confirmed
+model of the purple ESP32-S3 N16R8 board shown in the user's photo. Its main
+PCB measures 57.15 x 27.94 x 1.02 mm including modeled surface details; the
+antenna extends beyond that PCB. Do not substitute these measurements for
+measurements of the actual board. The STEP includes fitted pin headers,
+whereas the photo shows the headers separately.
+
+Placement is a 90-degree world-X rotation followed by a 180-degree world-Z
+rotation and translation [0, 0, 11.01]. The PCB underside is Z = 10 mm,
+2 mm above the existing support pads for nonconductive foam tape. Reference
+bounds are approximately [-29.2088, -13.975, 2.31] to
+[34.815, 13.975, 14.22]. The modeled header pins clear the 2 mm floor by
+0.31 mm; highest modeled components clear the lid underside by 5.78 mm.
+These are geometric reference clearances, not manufacturing tolerances or
+a complete interference assessment with the unmodeled IR board and wiring.
+
+Both USB-C sockets face the negative-X access opening. Their fronts are
+approximately 9.79 mm behind the outside wall, so actual cable plug reach
+must be checked. The reference has deliberately not been slid into the wall
+or used to silently change the support locations or enclosure. A future
+fit revision may need to move the board, change supports, or recess the wall.
+
+The imported STEP has one open-body warning and several small-detail
+face-wrapping warnings. There are no failed timeline features, but this
+third-party import is for visual reference rather than precision collision
+or mass calculations. The PCB volume is preserved through the rigid moves
+(1555.390290 mm^3). Enclosure volumes remain 21118.191621 mm^3 for Base and
+6370.019247 mm^3 for Lid.
+
+Model by David Scambell, originally published at
+[GrabCAD](https://grabcad.com/library/yd-esp32-s3-1), downloaded from
+[shkuznetsov/YD-ESP32-S3](https://github.com/shkuznetsov/YD-ESP32-S3) at commit
+bb410449c3d5ee20096ff273d6c1081c5dd6228f. The repository publishes an MIT
+licence with a manufacturer-licensing caveat and credits the original model
+author. Its licence is retained alongside the unmodified STEP.
+
+Source STEP SHA-256:
+EDC0685479A0C1A91ABD1ADF4516EC2784258A58095663B3F4272A125D5CF624.
 
 ## Dimensions And Assumptions
 
@@ -33,8 +85,9 @@ All dimensions are millimetres.
 
 The listing photographs show four emitters, a receiver, and four corner
 mounting holes, but contain no mechanical dimensions. Its linked PDF could
-not be extracted. No fitted electronics models or interference simulation
-were used. This is not a guaranteed-fit enclosure.
+not be extracted. No fitted IR model or full interference simulation was
+used. An approximate ESP32 reference is available in the separate assembly
+described above. This is not a guaranteed-fit enclosure.
 
 The corrected lid has a real through-window: the former solid deck, raised
 guard, and raised mounting posts have been removed. Mount the IR PCB beneath
