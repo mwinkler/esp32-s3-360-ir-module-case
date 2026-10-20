@@ -119,6 +119,76 @@
       "unit": "mm",
       "comment": "Fixed 4 mm mounting finger width; 2.8 mm clearance holes.",
       "model": false
+    },
+    {
+      "name": "ESP_seat_Z",
+      "expr": "10 mm",
+      "unit": "mm",
+      "comment": "Fixed 10 mm PCB underside; fitted reference pins clear floor by 0.31 mm.",
+      "model": false
+    },
+    {
+      "name": "ESP_PCB_half_L",
+      "expr": "28.575 mm",
+      "unit": "mm",
+      "comment": "Fixed measured reference main-PCB half length; actual board must be checked.",
+      "model": false
+    },
+    {
+      "name": "ESP_PCB_half_W",
+      "expr": "13.97 mm",
+      "unit": "mm",
+      "comment": "Fixed measured reference PCB half width; verify actual board.",
+      "model": false
+    },
+    {
+      "name": "ESP_PCB_T",
+      "expr": "1.02 mm",
+      "unit": "mm",
+      "comment": "Fixed measured reference PCB thickness including modeled surface detail.",
+      "model": false
+    },
+    {
+      "name": "ESP_clamp_Z",
+      "expr": "ESP_seat_Z+ESP_PCB_T",
+      "unit": "mm",
+      "comment": "Derived retainer underside and screw-boss top; nominal contact with PCB top.",
+      "model": false
+    },
+    {
+      "name": "ESP_side_gap",
+      "expr": "0.28 mm",
+      "unit": "mm",
+      "comment": "Fixed per-side PCB guide clearance; validate printed fit.",
+      "model": false
+    },
+    {
+      "name": "ESP_end_gap",
+      "expr": "0.25 mm",
+      "unit": "mm",
+      "comment": "Fixed per-end PCB stop clearance.",
+      "model": false
+    },
+    {
+      "name": "ESP_edge_overlap",
+      "expr": "0.52 mm",
+      "unit": "mm",
+      "comment": "Fixed retainer overlap onto PCB edge; verify no components or solder are trapped.",
+      "model": false
+    },
+    {
+      "name": "ESP_clamp_X",
+      "expr": "23 mm",
+      "unit": "mm",
+      "comment": "Fixed retainer screw half-spacing along X.",
+      "model": false
+    },
+    {
+      "name": "ESP_clamp_Y",
+      "expr": "18 mm",
+      "unit": "mm",
+      "comment": "Fixed retainer screw half-spacing along Y.",
+      "model": false
     }
   ],
   "features": [
@@ -692,7 +762,7 @@
         1.0
       ],
       "radius": "2.5",
-      "height": "7",
+      "height": "ESP_seat_Z-1 mm",
       "operation": "join"
     },
     {
@@ -9257,9 +9327,362 @@
         406,
         407
       ]
+    },
+    {
+      "id": 361,
+      "name": "ESPClampScrewBoss",
+      "suppressed": false,
+      "param_names": [
+        "d87",
+        "d88",
+        "d89"
+      ],
+      "participants": [
+        "Base"
+      ],
+      "type": "box",
+      "corner": [
+        "ESP_clamp_X-3.5 mm",
+        "ESP_clamp_Y-3.5 mm",
+        1.0
+      ],
+      "length": "7",
+      "width": "7",
+      "height": "ESP_clamp_Z-1 mm",
+      "operation": "join"
+    },
+    {
+      "id": 362,
+      "name": "FourESPClampScrewBosses",
+      "suppressed": false,
+      "param_names": [
+        "d90",
+        "d91",
+        "d92",
+        "d93"
+      ],
+      "type": "pattern",
+      "features": [
+        "ESPClampScrewBoss"
+      ],
+      "pattern": {
+        "type": "rectangular",
+        "dir1": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "count1": "2",
+        "spacing1": "2*ESP_clamp_X",
+        "dir2": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "count2": "2",
+        "spacing2": "2*ESP_clamp_Y"
+      }
+    },
+    {
+      "id": 363,
+      "name": "ESPPCBEdgeGuide",
+      "suppressed": false,
+      "param_names": [
+        "d94",
+        "d95",
+        "d96"
+      ],
+      "participants": [
+        "Base"
+      ],
+      "type": "box",
+      "corner": [
+        "ESP_clamp_X-3 mm",
+        "ESP_PCB_half_W+ESP_side_gap",
+        1.0
+      ],
+      "length": "6",
+      "width": "1.5",
+      "height": "ESP_clamp_Z-1 mm",
+      "operation": "join"
+    },
+    {
+      "id": 364,
+      "name": "FourESPPCBEdgeGuides",
+      "suppressed": false,
+      "param_names": [
+        "d97",
+        "d98",
+        "d99",
+        "d100"
+      ],
+      "type": "pattern",
+      "features": [
+        "ESPPCBEdgeGuide"
+      ],
+      "pattern": {
+        "type": "rectangular",
+        "dir1": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "count1": "2",
+        "spacing1": "2*ESP_clamp_X",
+        "dir2": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "count2": "2",
+        "spacing2": "2*(ESP_PCB_half_W+ESP_side_gap+0.75 mm)"
+      }
+    },
+    {
+      "id": 365,
+      "name": "ESPPCBEndStop",
+      "suppressed": false,
+      "param_names": [
+        "d101",
+        "d102",
+        "d103"
+      ],
+      "participants": [
+        "Base"
+      ],
+      "type": "box",
+      "corner": [
+        "ESP_PCB_half_L+ESP_end_gap",
+        10.8,
+        1.0
+      ],
+      "length": "2",
+      "width": "2",
+      "height": "ESP_clamp_Z-1 mm",
+      "operation": "join"
+    },
+    {
+      "id": 366,
+      "name": "FourESPPCBEndStops",
+      "suppressed": false,
+      "param_names": [
+        "d104",
+        "d105",
+        "d106",
+        "d107"
+      ],
+      "type": "pattern",
+      "features": [
+        "ESPPCBEndStop"
+      ],
+      "pattern": {
+        "type": "rectangular",
+        "dir1": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "count1": "2",
+        "spacing1": "2*(ESP_PCB_half_L+ESP_end_gap+1 mm)",
+        "dir2": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "count2": "2",
+        "spacing2": "23.6"
+      }
+    },
+    {
+      "id": 367,
+      "name": "ESPClampScrewPilot",
+      "suppressed": false,
+      "param_names": [
+        "d108",
+        "d109"
+      ],
+      "participants": [
+        "Base"
+      ],
+      "type": "cylinder",
+      "base": [
+        "ESP_clamp_X",
+        "ESP_clamp_Y",
+        "ESP_clamp_Z-8 mm"
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "radius": "(2.1 mm) / 2",
+      "height": "9",
+      "operation": "cut"
+    },
+    {
+      "id": 368,
+      "name": "FourESPClampScrewPilots",
+      "suppressed": false,
+      "param_names": [
+        "d110",
+        "d111",
+        "d112",
+        "d113"
+      ],
+      "type": "pattern",
+      "features": [
+        "ESPClampScrewPilot"
+      ],
+      "pattern": {
+        "type": "rectangular",
+        "dir1": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "count1": "2",
+        "spacing1": "2*ESP_clamp_X",
+        "dir2": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "count2": "2",
+        "spacing2": "2*ESP_clamp_Y"
+      }
+    },
+    {
+      "id": 369,
+      "name": "ESPRetainerBar",
+      "suppressed": false,
+      "body_names": [
+        "ESPRetainerNorth"
+      ],
+      "param_names": [
+        "d114",
+        "d115",
+        "d116"
+      ],
+      "type": "box",
+      "corner": [
+        -26.0,
+        32.0,
+        0.0
+      ],
+      "length": "52",
+      "width": "7",
+      "height": "2",
+      "operation": "new_body"
+    },
+    {
+      "id": 370,
+      "name": "ESPRetainerClearanceHole",
+      "suppressed": false,
+      "param_names": [
+        "d117",
+        "d118"
+      ],
+      "participants": [
+        "ESPRetainerNorth"
+      ],
+      "type": "cylinder",
+      "base": [
+        "ESP_clamp_X",
+        "32 mm+ESP_clamp_Y-ESP_PCB_half_W+ESP_edge_overlap",
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "radius": "(2.8 mm) / 2",
+      "height": "4",
+      "operation": "cut"
+    },
+    {
+      "id": 371,
+      "name": "TwoESPRetainerClearanceHoles",
+      "suppressed": false,
+      "param_names": [
+        "d119",
+        "d120"
+      ],
+      "type": "pattern",
+      "features": [
+        "ESPRetainerClearanceHole"
+      ],
+      "pattern": {
+        "type": "rectangular",
+        "dir1": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "count1": "2",
+        "spacing1": "2*ESP_clamp_X"
+      }
+    },
+    {
+      "id": 372,
+      "name": "ESPRetainerSouthMirror",
+      "suppressed": false,
+      "body_names": [
+        "ESPRetainerSouth"
+      ],
+      "type": "mirror",
+      "features": [],
+      "plane": {
+        "type": "origin",
+        "name": "XZ"
+      },
+      "bodies": [
+        "ESPRetainerNorth"
+      ],
+      "placements": [
+        []
+      ]
+    },
+    {
+      "id": 373,
+      "name": "ESPRetainerNorthInstalled",
+      "suppressed": false,
+      "param_names": [
+        "d121",
+        "d122",
+        "d123"
+      ],
+      "type": "move",
+      "bodies": [
+        "ESPRetainerNorth"
+      ],
+      "translate": [
+        "0",
+        "ESP_PCB_half_W-ESP_edge_overlap-32 mm",
+        "ESP_clamp_Z"
+      ]
+    },
+    {
+      "id": 374,
+      "name": "ESPRetainerSouthInstalled",
+      "suppressed": false,
+      "param_names": [
+        "d124",
+        "d125",
+        "d126"
+      ],
+      "type": "move",
+      "bodies": [
+        "ESPRetainerSouth"
+      ],
+      "translate": [
+        "0",
+        "32 mm-ESP_PCB_half_W+ESP_edge_overlap",
+        "ESP_clamp_Z"
+      ]
     }
   ],
-  "next_id": 361,
+  "next_id": 375,
   "components": [
     {
       "id": 32,

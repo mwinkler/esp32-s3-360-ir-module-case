@@ -7,8 +7,9 @@ and the Jessinie 38 kHz IR transmitter/receiver linked below.
 
 - [Editable SolidCraft design](esp32_s3_ir360_prototype.solidcraft)
 - [Base STL](base.stl)
+- [ESP32 retaining bar STL, print two](esp_retainer.stl)
 - [Lid with IR through-window STL](lid_ir_deck.stl)
-- [STEP, both parts in print layout](esp32_s3_ir360_prototype.step)
+- [STEP, enclosure and retainers in print layout](esp32_s3_ir360_prototype.step)
 - [Preview](preview.png)
 - [Assembly with ESP32 reference, editable JSON](esp32_s3_ir360_with_reference.json)
 - [Reference assembly preview](reference_preview.png)
@@ -19,7 +20,10 @@ and the Jessinie 38 kHz IR transmitter/receiver linked below.
 
 Both the native SolidCraft design and the reference JSON assembly now include
 the downloaded YD-ESP32-S3 model inside the base. The lid remains beside the
-base for visibility. The enclosure-only STEP and printable STLs are unchanged.
+base for visibility. The revised base includes taller PCB supports, four
+retainer screw bosses, side guides, and end stops. Two removable bars secure
+the PCB edges without requiring mounting holes in the board. They are shown
+installed in the editable assembly and laid out separately in the STEP export.
 The imported component is named ESP32_S3_REFERENCE_NOT_FOR_PRINT: exclude it
 from any print export. Open the reference JSON as a SolidCraft design, not as
 a command script.
@@ -33,7 +37,7 @@ whereas the photo shows the headers separately.
 
 Placement is a 90-degree world-X rotation followed by a 180-degree world-Z
 rotation and translation [0, 0, 11.01]. The PCB underside is Z = 10 mm,
-2 mm above the existing support pads for nonconductive foam tape. Reference
+supported directly by the revised Z = 10 mm support pads. Reference
 bounds are approximately [-29.2088, -13.975, 2.31] to
 [34.815, 13.975, 14.22]. The modeled header pins clear the 2 mm floor by
 0.31 mm; highest modeled components clear the lid underside by 5.78 mm.
@@ -42,16 +46,51 @@ a complete interference assessment with the unmodeled IR board and wiring.
 
 Both USB-C sockets face the negative-X access opening. Their fronts are
 approximately 9.79 mm behind the outside wall, so actual cable plug reach
-must be checked. The reference has deliberately not been slid into the wall
-or used to silently change the support locations or enclosure. A future
-fit revision may need to move the board, change supports, or recess the wall.
+must be checked. The reference has not been slid into the wall. A future
+USB-access revision may need to move the board or recess the wall.
 
 The imported STEP has one open-body warning and several small-detail
 face-wrapping warnings. There are no failed timeline features, but this
 third-party import is for visual reference rather than precision collision
 or mass calculations. The PCB volume is preserved through the rigid moves
-(1555.390290 mm^3). Enclosure volumes remain 21118.191621 mm^3 for Base and
-6370.019247 mm^3 for Lid.
+(1555.390290 mm^3). The revised Base measures 23130.812933 mm^3;
+the unchanged Lid measures 6370.019247 mm^3. Each retainer measures
+703.374005 mm^3. The exact interference check against the detailed imported
+electronics timed out; the clearance statements here are based on measured
+reference bounds, not a completed all-surfaces collision check.
+
+## Header Clearance And Mechanical Retention
+
+The previous pads stopped at Z = 8 mm, leaving a 2 mm unsupported gap below
+the reference PCB. They now reach Z = 10 mm. Fitted reference header pins end
+at Z = 2.31 mm, clearing the 2 mm floor by 0.31 mm. Longer actual pins will
+require a further height/USB-clearance revision; do not force them onto the floor.
+
+Print two copies of esp_retainer.stl. Each bar is 52 x 7 x 2 mm and has two
+2.8 mm clearance holes on 46 mm centers. Four matching base bosses accept
+plastic-thread-forming M2.5 x 8 mm screws in 2.1 mm pilots, 8 mm deep.
+The screws go into the printed bosses, not the PCB. Bar undersides nominally
+contact the PCB top at Z = 11.02 mm; tighten gently and stop if the PCB bends.
+
+The retainers overlap the outermost 0.52 mm of the reference PCB edges.
+Their inner edges are at Y = +/-13.45 mm, outside the modeled header pins
+(outer pin edge +/-13.025 mm), leaving 0.425 mm lateral clearance. Check
+both edges on the actual board for components, solder, and traces before
+tightening. Do not clamp components or solder joints. The imported model
+is not a verified model of the user's board revision.
+
+Four side guides provide 0.28 mm nominal clearance per side. Four end stops
+provide 0.25 mm nominal clearance at the main PCB ends and sit outside the
+reference USB shells and antenna. Together the guides and stops limit X/Y
+movement; the bars prevent lifting. No adhesive or PCB mounting holes are
+required. The bars are separate from the lid, so the lid's optical opening
+stays clear and the ESP32 remains retained when the lid is removed.
+
+The reference is 27.94 mm wide with a 57.15 mm main PCB. Measure your actual
+board before printing: ESP_PCB_half_L, ESP_PCB_half_W, ESP_PCB_T,
+ESP_side_gap, and ESP_end_gap encode this fit. They are fixed documented
+defaults, not validated adjustable ranges. Changing them requires rechecking
+header, component, retainer-hole, wall, and USB clearances.
 
 Model by David Scambell, originally published at
 [GrabCAD](https://grabcad.com/library/yd-esp32-s3-1), downloaded from
@@ -75,7 +114,8 @@ All dimensions are millimetres.
 | Closed case height, excluding IR deck | 22 | Derived |
 | Maximum plastic height when assembled | 22 | Derived; IR optics protrude through the opening |
 | ESP32 PCB envelope | Approximately 62.8 x 25.4 | Nominal assumption; verify actual revision |
-| ESP32 support tops | Z = 8 inside base | Four foam-tape pads, not PCB screw holes |
+| ESP32 support tops | Z = 10 inside base | Four PCB underside supports |
+| ESP32 retention | Two removable 52 x 7 x 2 bars | Four M2.5 x 8 screws into printed bosses; no PCB holes |
 | USB access, negative-X end | 26 wide x 8 high; Z = 7 to 15 | Cable and connector fit unverified |
 | IR PCB | 30 x 20 | ESTIMATED, not supplied by seller |
 | IR hole spacing | 24 x 14 | ESTIMATED, not supplied by seller |
@@ -104,15 +144,17 @@ for unattended installation.
 
 1. Check actual IR PCB dimensions, mounting-hole pitch and diameter, header
    position, and component heights before committing to a full print.
-2. Print both parts with their flat Z = 0 undersides on the bed. The lid STL
+2. Print the base, lid, and two retaining bars with their flat undersides on the bed. The lid STL
    retains its print-layout X offset; use the slicer's arrange/center command.
    PETG, 0.2 mm layers, and four perimeters are reasonable starting settings.
    Check the 26 mm USB bridge in the slicer; local supports may be needed.
 3. Orient the ESP32 length along X with both USB connectors toward negative X.
-   Use thin nonconductive foam tape on the four support pads. Check that pads
-   do not contact underside components, that pin tails clear the floor, and
-   that the antenna and wiring have adequate clearance. Reposition the support
-   features if your board requires it. Board retention is adhesive, not screws.
+   Seat the PCB on the four Z = 10 mm supports between the side guides and end
+   stops. Check that supports do not contact underside components and that
+   pin tails clear the floor. Fit both retaining bars over the outer PCB edges
+   and secure them with four plastic-thread-forming M2.5 x 8 mm screws.
+   Tighten gently without bending the PCB. Check the pin/solder clearances
+   described above. Retention is mechanical; foam tape is no longer required.
 4. Keep the IR wiring inside the case. The former separate wiring slot is
    absorbed into the larger optical opening. Check header and wire clearance.
 5. Mount the IR PCB flush beneath the four lid fingers, with its LEDs and
@@ -125,6 +167,11 @@ for unattended installation.
 6. Close the lid with four suitable plastic-thread-forming M2.5 x 10 screws.
    Lid clearance holes are 2.8 mm and base pilots are 2.1 mm x 12 mm deep.
    Check a pilot-hole coupon with your material and screws; do not overtighten.
+
+The native/JSON designs show the retaining bars installed. The STEP export
+shows them in print layout: translate the north bar [0, -18.55, 11.02] and the
+south bar [0, 18.55, 11.02] to assemble them. The single bar STL prints twice;
+the second bar is the same part turned 180 degrees around Z.
 
 In CAD, assemble the lid by translating it [-92, 0, 20] from the default
 print layout. The general translation is [-lid_X, 0, case_H]. No locating lip
@@ -148,24 +195,28 @@ rather than providing physical slots. Larger changes require a new clearance
 and geometry check. Earlier deck features remain in the timeline, but the
 final named removal and window features replace their geometry.
 
-Endpoint changes and returns rebuilt without errors. The single sketch has
-zero degrees of freedom. The checked timeline has no errors or warnings.
-The corrected lid was checked at the same parameter endpoints and restored
-to defaults. The base geometry is unchanged.
+The original enclosure and corrected lid endpoint checks are recorded below.
+The imported ESP32 carries the third-party warnings documented above. The
+retention revision was checked by independent volume calculations and measured
+placements; it changes the base but leaves the lid and reference placement
+unchanged. New retention features reported no warnings when created.
+The revised case_L = 82 endpoint rebuilt without errors and matched the
+expected volume. Returning to 78 restored the default measured geometry.
 
 | State | Analytic volume, mm^3 | Measured volume, mm^3 |
 | --- | --- | --- |
-| Base, case_L = 78 | 21118.2955 | 21118.1916 |
+| Revised base, case_L = 78 | 23130.8997 | 23130.8129 |
+| Each retainer | 703.3699 | 703.3740 |
 | Corrected lid, case_L = 78 | 6370.0106 | 6370.0192 |
-| Base, case_L = 82 | 21822.2955 | 21822.1960 |
+| Revised base, case_L = 82 | 23834.8997 | 23834.8207 |
 | Corrected lid, case_L = 82 | 6786.0106 | 6786.0202 |
 | Corrected lid, IR_pitch_X = 26 | 6370.0106 | 6370.0192 |
 | Corrected lid, IR_pitch_Y = 16 | 6338.0106 | 6338.0192 |
 
 Differences are below 0.001 percent. The default base bounding box is
 [-39, -26, 0] to [39, 26, 20]; the lid is [53, -26, 0] to [131, 26, 2].
-The predicted default X centers of mass are 0.748545 and 92;
-measurements are 0.748549 and 92. The lid Z center of mass is 1.
+The revised base X center of mass is approximately 0.683417; the unchanged
+lid X center is 92 and its Z center is 1.
 Top views were checked for the through-window and mounting fingers.
 Physical fit, IR performance, and
 slicer/manufacturing validation remain outstanding.
@@ -176,7 +227,9 @@ Independent volume formulas, with P = pi and L = case_L:
 A = 52*L - (4-P)*16
 B = 48*(L-4) - (4-P)*4
 Base = 20*A - 18*B + 18*(256-4*(4-P))
-       + 4*P*2.5^2*6 - 4*P*1.05^2*12 - 416 - 288
+   + 4*P*2.5^2*8 - 4*P*1.05^2*12 - 416 - 288
+   + (4*49 + 4*6*0.25 + 4*4)*(ESP_clamp_Z-2) - 4*P*1.05^2*8
+Retainer = 52*7*2 - 2*P*1.4^2*2
 WindowArea = IR_window_L*IR_window_W
              - 4*IR_tab_W*(IR_window_W/2 - (IR_pitch_Y-IR_tab_W)/2)
 Lid = 2*A - 2*WindowArea - 8*P*1.4^2*2
