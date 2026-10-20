@@ -19,7 +19,7 @@ Both electronics models are non-print references; hardware fit remains unverifie
 The supplied photo guided the component layout. PCB dimensions, LED tilt,
 and package sizes are estimates, not measurements from the photo. See
 [Recreated IR Module Reference](#recreated-ir-module-reference) for assumptions
-and the possible LED-base clearance issue at the lid mounting fingers.
+and the revised edge-clamp mount that clears the modeled LED bodies.
 
 ## Files
 
@@ -27,6 +27,7 @@ and the possible LED-base clearance issue at the lid mounting fingers.
 - [Base STL](base.stl)
 - [ESP32 retaining bar STL, print two](esp_retainer.stl)
 - [Lid with IR through-window STL](lid_ir_deck.stl)
+- [IR keeper plate STL, print two](ir_keeper.stl)
 - [STEP, enclosure and retainers in print layout](esp32_s3_ir360_prototype.step)
 - [Preview](preview.png)
 - [Assembly with ESP32 reference, editable JSON](esp32_s3_ir360_with_reference.json)
@@ -44,6 +45,8 @@ base for visibility. The revised base includes taller PCB supports, four
 retainer screw bosses, side guides, and end stops. Two removable bars secure
 the PCB edges without requiring mounting holes in the board. They are shown
 installed in the editable assembly and laid out separately in the STEP export.
+Two additional underside keeper plates now secure the IR PCB at its outer
+edges; its original corner mounting holes are not used by the enclosure.
 The imported component is named ESP32_S3_REFERENCE_NOT_FOR_PRINT. The recreated
 IR component is named IR360_REFERENCE_ESTIMATED_NOT_FOR_PRINT. Exclude both
 from any print export. Open the reference JSON as a SolidCraft design, not as
@@ -75,8 +78,8 @@ face-wrapping warnings. There are no failed timeline features, but this
 third-party import is for visual reference rather than precision collision
 or mass calculations. The PCB volume is preserved through the rigid moves
 (1555.390290 mm^3). The revised Base measures 23130.812933 mm^3;
-the unchanged Lid measures 6370.019247 mm^3. Each retainer measures
-703.374005 mm^3. The exact interference check against the detailed imported
+the LED-clearance Lid measures 6395.018624 mm^3. Each ESP32 retainer measures
+703.374005 mm^3 and each IR keeper 385.374005 mm^3. The exact interference check against the detailed imported
 electronics timed out; the clearance statements here are based on measured
 reference bounds, not a completed all-surfaces collision check.
 
@@ -154,11 +157,29 @@ the lid assembled, translate it [-lid_X, 0, case_H], just like the lid.
 Its lowest modeled pin is then Z = 17.4 mm and its highest lens Z = 28.5034 mm.
 The standalone reference STEP retains these display-layout coordinates.
 
-This approximate model suggests possible contact between the outward-tilted
-LED bases and the remaining lid mounting fingers, and near-contact between
-the header housing and those fingers. This task did not change the lid or
-claim optical clearance. Verify actual component positions and package sizes
-before printing; window or finger changes may be needed after measurement.
+The LED-base interference with the old lid mounting fingers has been corrected
+by removing those fingers. Four narrow supports now contact only the outermost
+0.75 mm of the PCB's short end edges; two underside keeper plates retain it.
+Fastener holes are outside the PCB, at X = +/-21.5 and Y = +/-6.5 relative
+to the module center, rather than at the PCB's corner holes. The LEDs were not
+shrunk, moved, or cut to make them fit. All 38 IR reference bodies retain their
+previous volumes and positions. The LED body envelopes clear both the support
+and keeper inner edges by 2.166 mm in X; they also remain inside the 36 x 26 mm
+opening in Y. The header and receiver clear the relocated supports as well.
+These checks apply to the estimated reference, not a measurement of actual
+hardware. Verify real component positions and PCB edge clearance before printing.
+
+Print two copies of ir_keeper.stl. Each keeper is 10.25 x 20 x 2 mm, with two
+2.8 mm holes on 13 mm centers. The lid's 1.6 mm underside spacer bosses match
+the assumed PCB thickness and prevent overtightening the keepers onto it.
+Use four M2.5 x 10 mm through-bolts, washers, and nuts; insert the bolts from
+below the keeper plates and put the nuts outside the lid. Use low-profile
+heads no taller than 1.5 mm and check the actual stack and thread engagement.
+Do not install long bolt tips pointing inward toward the ESP32. In the assembled
+reference, keeper undersides are Z = 16.4 mm, 2.18 mm above the highest modeled
+ESP32 component; a 1.5 mm head leaves 0.68 mm by vertical envelope comparison.
+Fasteners themselves are not modeled and real wiring/board clearance is unverified.
+Tighten only until secure; do not bend the PCB or trap components or solder joints.
 
 The rounded LED/receiver lenses are separate overlapping reference solids,
 not watertight fused electronic packages. Leads are simplified and PCB
@@ -174,7 +195,8 @@ returned to defaults. The PCB stays at 905.444046 mm^3 (analytic 905.437880);
 its X center moves from 92 to 96 when the case length grows by 4 mm.
 New IR timeline features have no errors or warnings. Primitive measurements
 agree with independent formulas within 0.02 percent, including tilted LED
-cylinders. Base and lid volumes are unchanged. No expensive full interference
+cylinders. The base and IR reference are unchanged; only the lid mount and
+its new keeper parts changed in the LED-clearance revision. No expensive full interference
 check against the detailed ESP32 import was attempted.
 
 ## Dimensions And Assumptions
@@ -195,8 +217,9 @@ All dimensions are millimetres.
 | IR PCB | 30 x 20 | ESTIMATED, not supplied by seller |
 | IR hole spacing | 24 x 14 | ESTIMATED, not supplied by seller |
 | IR hole diameter | Approximately 3.2 | ESTIMATED; represented in the reference PCB |
-| IR mounting | Flush beneath lid | Four 4 mm-wide fingers with 2.8 mm clearance holes |
-| IR optical window envelope | 36 x 26 | Through-cut, except for the four mounting fingers |
+| IR mounting | Outer PCB edges clamped beneath lid | Four 0.75 mm overlaps and two underside keepers; original PCB holes unused |
+| IR external fastener pitch | 43 x 13 | Four M2.5 through-bolts, outside PCB and LED bodies |
+| IR optical window envelope | 36 x 26 | Through-cut except for four short outer-edge support lips |
 
 The listing photographs show four emitters, a receiver, and four corner
 mounting holes, but contain no mechanical dimensions. Its linked PDF could
@@ -206,11 +229,11 @@ included in the editable assemblies as described above. This is not a
 guaranteed-fit enclosure.
 
 The corrected lid has a real through-window: the former solid deck, raised
-guard, and raised mounting posts have been removed. Mount the IR PCB beneath
-the lid, component side facing out through the opening. Four narrow mounting
-fingers remain at the estimated PCB hole positions. The board is inside the
-case, while the LEDs and receiver must protrude through the window. Verify
-their clearance from the mounting fingers and the 2 mm lid thickness, along
+guard, raised mounting posts, and LED-clipping corner fingers have been removed.
+Mount the IR PCB beneath the four outer-edge lips with its components facing
+out through the opening, then clamp it from below using the two keeper plates.
+The board is inside the case while the LEDs and receiver protrude through the
+window. Verify their clearance from the edge supports and 2 mm lid thickness, along
 with clearance to the ESP32 and wiring below. Exact component positions and
 heights are not verified, so unobstructed optical coverage must be checked
 with the actual module. The case is not waterproof, dustproof, or certified
@@ -220,8 +243,11 @@ for unattended installation.
 
 1. Check actual IR PCB dimensions, mounting-hole pitch and diameter, header
    position, and component heights before committing to a full print.
-2. Print the base, lid, and two retaining bars with their flat undersides on the bed. The lid STL
-   retains its print-layout X offset; use the slicer's arrange/center command.
+2. Print the base, lid, two ESP32 retaining bars, and two IR keeper plates.
+   The lid STL is already flipped with its flat outside face on Z = 0 and
+   the underside spacer bosses pointing up; do not flip that STL again.
+   Other STLs also have their flat print faces at Z = 0. Use the slicer's
+   arrange/center command to remove the saved XY layout offsets.
    PETG, 0.2 mm layers, and four perimeters are reasonable starting settings.
    Check the 26 mm USB bridge in the slicer; local supports may be needed.
 3. Orient the ESP32 length along X with both USB connectors toward negative X.
@@ -233,13 +259,13 @@ for unattended installation.
    described above. Retention is mechanical; foam tape is no longer required.
 4. Keep the IR wiring inside the case. The former separate wiring slot is
    absorbed into the larger optical opening. Check header and wire clearance.
-5. Mount the IR PCB flush beneath the four lid fingers, with its LEDs and
-   receiver facing outward through the window. Use four M2.5 through-bolts
-   with washers and nuts, approximately 8 mm long for a 1.6 mm PCB; verify
-   actual stack thickness and avoid contact with circuitry. The lid holes
-   are 2.8 mm through-clearances, not self-tapping pilot holes. Check that
-   component bodies and screw heads do not obstruct the optics. If they do,
-   adjust the window or mounting fingers to measured component positions.
+5. Mount the IR PCB against the lid's four outer-edge lips, with LEDs and
+   receiver facing outward. Fit the two keeper plates beneath the PCB ends.
+   The board's original mounting holes stay unused. Secure the keepers with
+   four M2.5 x 10 mm through-bolts inserted from below, washers, and nuts on
+   the outside of the lid. Use heads no taller than 1.5 mm; check engagement,
+   electronics clearance, and bare PCB edge contact before tightening gently.
+   Confirm the actual LEDs and receiver have an unobstructed optical path.
 6. Close the lid with four suitable plastic-thread-forming M2.5 x 10 screws.
    Lid clearance holes are 2.8 mm and base pilots are 2.1 mm x 12 mm deep.
    Check a pilot-hole coupon with your material and screws; do not overtighten.
@@ -248,6 +274,13 @@ The native/JSON designs show the retaining bars installed. The STEP export
 shows them in print layout: translate the north bar [0, -18.55, 11.02] and the
 south bar [0, 18.55, 11.02] to assemble them. The single bar STL prints twice;
 the second bar is the same part turned 180 degrees around Z.
+
+The STEP lid is also flipped for printing, like its STL. To assemble that
+STEP lid, rotate it 180 degrees around world X and translate [-92, 0, 22].
+The STEP IR keepers sit at Y = 52, Z = 0; translate both [0, -52, 16.4] to
+assemble them. Print the single keeper STL twice; the second is the same part
+turned 180 degrees around Z. Native/JSON keepers are already installed under
+the displayed lid, and should move with the lid/IR module when assembling it.
 
 In CAD, assemble the lid by translating it [-92, 0, 20] from the default
 print layout. The general translation is [-lid_X, 0, case_H]. No locating lip
@@ -264,12 +297,15 @@ Favourite driving parameters have these tested endpoint ranges:
 | IR_pitch_Y | 14 | 14 to 16 |
 
 Other driving dimensions are documented as fixed. IR_PCB_L and IR_PCB_W are
-estimates that now drive only the recreated reference PCB, not the window.
-IR_window_L = 36, IR_window_W = 26, and IR_tab_W = 4 are fixed dimensions.
-Changing IR mounting pitches moves the clearance holes and mounting fingers,
-rather than providing physical slots. Larger changes require a new clearance
-and geometry check. Earlier deck features remain in the timeline, but the
-final named removal and window features replace their geometry.
+estimates that drive the recreated PCB and its outer-edge clamps, not the window.
+IR_window_L = 36 and IR_window_W = 26 are fixed dimensions. IR_tab_W is a
+legacy input to the earlier fingers, removed by the final clearance feature.
+Changing IR mounting pitches now moves only reference-PCB holes and the
+superseded upstream fingers; the final edge clamps do not use those holes.
+IR_edge_overlap = 0.75 and the keeper/spacer dimensions are fixed documented
+defaults, not tested adjustable ranges. Larger changes require a new clearance
+and geometry check. Earlier deck/finger features remain in the timeline, but
+the final named removal and outer-edge mount features replace their geometry.
 
 The original enclosure and corrected lid endpoint checks are recorded below.
 The imported ESP32 carries the third-party warnings documented above. The
@@ -283,17 +319,18 @@ expected volume. Returning to 78 restored the default measured geometry.
 | --- | --- | --- |
 | Revised base, case_L = 78 | 23130.8997 | 23130.8129 |
 | Each retainer | 703.3699 | 703.3740 |
-| Corrected lid, case_L = 78 | 6370.0106 | 6370.0192 |
+| LED-clearance lid, case_L = 78 | 6395.0025 | 6395.0186 |
+| Each IR keeper | 385.3699 | 385.3740 |
 | Revised base, case_L = 82 | 23834.8997 | 23834.8207 |
-| Corrected lid, case_L = 82 | 6786.0106 | 6786.0202 |
-| Corrected lid, IR_pitch_X = 26 | 6370.0106 | 6370.0192 |
-| Corrected lid, IR_pitch_Y = 16 | 6338.0106 | 6338.0192 |
+| LED-clearance lid, case_L = 82, IR pitches = 26 x 16 | 6811.0025 | 6811.0199 |
 
-Differences are below 0.001 percent. The default base bounding box is
-[-39, -26, 0] to [39, 26, 20]; the lid is [53, -26, 0] to [131, 26, 2].
-The revised base X center of mass is approximately 0.683417; the unchanged
-lid X center is 92 and its Z center is 1.
-Top views were checked for the through-window and mounting fingers.
+Differences are below 0.002 percent. The default base bounding box is
+[-39, -26, 0] to [39, 26, 20]; the display lid is [53, -26, -1.6] to [131, 26, 2].
+The revised base X center of mass is approximately 0.683417; the
+lid X center is 92 and its Z center is approximately 0.946240.
+The updated case-length and reference-hole-pitch walk rebuilt without errors
+at the upper endpoints and returned to defaults. Top views were checked for
+the through-window, outer-edge lips, and LED clearance.
 Physical fit, IR performance, and
 slicer/manufacturing validation remain outstanding.
 
@@ -306,9 +343,11 @@ Base = 20*A - 18*B + 18*(256-4*(4-P))
    + 4*P*2.5^2*8 - 4*P*1.05^2*12 - 416 - 288
    + (4*49 + 4*6*0.25 + 4*4)*(ESP_clamp_Z-2) - 4*P*1.05^2*8
 Retainer = 52*7*2 - 2*P*1.4^2*2
-WindowArea = IR_window_L*IR_window_W
-             - 4*IR_tab_W*(IR_window_W/2 - (IR_pitch_Y-IR_tab_W)/2)
-Lid = 2*A - 2*WindowArea - 8*P*1.4^2*2
+Lid = 2*A - 2*IR_window_L*IR_window_W - 4*P*1.4^2*2
+   + 4*(IR_window_L/2-IR_keeper_inner_X)*3*2
+   + 4*36*IR_ref_T - 4*P*1.4^2*(2+IR_ref_T)
+IRKeeper = (IR_keeper_outer_X-IR_keeper_inner_X)*IR_PCB_W*IR_keeper_T
+        - 2*P*1.4^2*IR_keeper_T
 ```
 
 ## Sources

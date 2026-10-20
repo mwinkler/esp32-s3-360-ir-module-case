@@ -63,14 +63,14 @@
       "name": "IR_PCB_L",
       "expr": "30 mm",
       "unit": "mm",
-      "comment": "REFERENCE ESTIMATE ONLY; fixed, not a geometry driver.",
+      "comment": "Fixed ESTIMATE from photos: reference PCB length only, not enclosure geometry. Measure hardware.",
       "model": false
     },
     {
       "name": "IR_PCB_W",
       "expr": "20 mm",
       "unit": "mm",
-      "comment": "REFERENCE ESTIMATE ONLY; fixed, not a geometry driver.",
+      "comment": "Fixed ESTIMATE from photos: reference PCB width only, not enclosure geometry. Measure hardware.",
       "model": false
     },
     {
@@ -9954,6 +9954,115 @@
       "operation": "new_body"
     },
     {
+      "id": 380,
+      "name": "IRReferencePCBCorners",
+      "suppressed": false,
+      "param_names": [
+        "d134"
+      ],
+      "component": 375,
+      "edge_refs": [
+        {
+          "dir": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "min": [
+            -15.0,
+            -10.0,
+            -1.6
+          ],
+          "max": [
+            15.0,
+            10.0,
+            0.0
+          ]
+        },
+        {
+          "dir": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "min": [
+            -15.0,
+            -10.0,
+            -1.6
+          ],
+          "max": [
+            15.0,
+            10.0,
+            0.0
+          ]
+        },
+        {
+          "dir": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "min": [
+            -15.0,
+            -10.0,
+            -1.6
+          ],
+          "max": [
+            15.0,
+            10.0,
+            0.0
+          ]
+        },
+        {
+          "dir": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "min": [
+            -15.0,
+            -10.0,
+            -1.6
+          ],
+          "max": [
+            15.0,
+            10.0,
+            0.0
+          ]
+        }
+      ],
+      "edge_names": [
+        "F378:side:l2|F378:side:l3",
+        "F378:side:l3|F378:side:l4",
+        "F378:side:l1|F378:side:l2",
+        "F378:side:l1|F378:side:l4"
+      ],
+      "type": "fillet",
+      "edges": [
+        [
+          15.0,
+          10.0,
+          -0.8
+        ],
+        [
+          -15.0,
+          10.0,
+          -0.8
+        ],
+        [
+          15.0,
+          -10.0,
+          -0.8
+        ],
+        [
+          -15.0,
+          -10.0,
+          -0.8
+        ]
+      ],
+      "radius": "IR_ref_R"
+    },
+    {
       "id": 379,
       "name": "IRReferencePCBAtLid",
       "suppressed": false,
@@ -9972,115 +10081,6 @@
         "0",
         "0"
       ]
-    },
-    {
-      "id": 380,
-      "name": "IRReferencePCBCorners",
-      "suppressed": false,
-      "param_names": [
-        "d134"
-      ],
-      "component": 375,
-      "edge_refs": [
-        {
-          "dir": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "min": [
-            77.0,
-            -10.0,
-            -1.6
-          ],
-          "max": [
-            107.0,
-            10.0,
-            0.0
-          ]
-        },
-        {
-          "dir": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "min": [
-            77.0,
-            -10.0,
-            -1.6
-          ],
-          "max": [
-            107.0,
-            10.0,
-            0.0
-          ]
-        },
-        {
-          "dir": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "min": [
-            77.0,
-            -10.0,
-            -1.6
-          ],
-          "max": [
-            107.0,
-            10.0,
-            0.0
-          ]
-        },
-        {
-          "dir": [
-            0.0,
-            0.0,
-            -1.0
-          ],
-          "min": [
-            77.0,
-            -10.0,
-            -1.6
-          ],
-          "max": [
-            107.0,
-            10.0,
-            0.0
-          ]
-        }
-      ],
-      "edge_names": [
-        "F378:side:l2|F378:side:l3",
-        "F378:side:l3|F378:side:l4",
-        "F378:side:l1|F378:side:l2",
-        "F378:side:l1|F378:side:l4"
-      ],
-      "type": "fillet",
-      "edges": [
-        [
-          107.0,
-          10.0,
-          -0.8
-        ],
-        [
-          77.0,
-          10.0,
-          -0.8
-        ],
-        [
-          107.0,
-          -10.0,
-          -0.8
-        ],
-        [
-          77.0,
-          -10.0,
-          -0.8
-        ]
-      ],
-      "radius": "IR_ref_R"
     },
     {
       "id": 381,
